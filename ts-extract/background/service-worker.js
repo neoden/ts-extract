@@ -13,7 +13,7 @@ chrome.action.onClicked.addListener(async (tab) => {
       world: 'MAIN', // needs the page's player object
       func: extractTranscript,
     });
-    result = injection?.result ?? { error: 'Скрипт ничего не вернул' };
+    result = injection?.result ?? { error: 'The page script returned nothing' };
   } catch (e) {
     result = { error: String(e?.message ?? e) };
   }
@@ -166,7 +166,7 @@ async function extractTranscript() {
   try {
     return (
       (await fromTimedtext()) ??
-      (await fromPanel()) ?? { error: 'Транскрипт не найден — похоже, у видео нет субтитров' }
+      (await fromPanel()) ?? { error: 'Transcript not found — this video seems to have no captions' }
     );
   } catch (e) {
     return { error: String(e?.message ?? e) };
@@ -195,7 +195,7 @@ async function copyAndNotify(result) {
   };
 
   if (!result?.text) {
-    toast(result?.error ?? 'Не удалось получить транскрипт', false);
+    toast(result?.error ?? 'Could not get the transcript', false);
     return false;
   }
 
@@ -216,8 +216,8 @@ async function copyAndNotify(result) {
 
   toast(
     copied
-      ? `Транскрипт скопирован: ${result.text.length.toLocaleString('ru-RU')} символов`
-      : 'Транскрипт получен, но скопировать в буфер не удалось',
+      ? `Transcript copied: ${result.text.length.toLocaleString('en-US')} characters`
+      : 'Got the transcript, but could not copy it to the clipboard',
     copied
   );
   return copied;
